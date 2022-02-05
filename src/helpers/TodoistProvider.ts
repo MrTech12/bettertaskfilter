@@ -27,6 +27,11 @@ exports.retrieveFilters = async (): Promise<FilterInterface[]> => {
 exports.retrieveTasks = async (filterQuery: FilterInterface): Promise<TaskInterface[]> => {
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
+    if(filterQuery == undefined) {
+        logger.error("From REST task request","The bucket filter has not been saved properly.");
+        process.exit(1);
+    }
+
     let filterBucketQuery: string = filterQuery.query.split("&").join("%26");
     let tasks: TaskInterface[] = [];
     let uri: string = `${restAPITasks}?filter=${filterBucketQuery}`;
