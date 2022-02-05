@@ -19,6 +19,14 @@
     "url": "https://github.com/MrTech12/bettertaskfilter/issues"
   },
   "devDependencies": {
-    "@types/node": "^17.0.14"
+    "@types/node": "^17.0.14",
+    "@types/uuid": "^8.3.4",
+    "ts-node": "^10.4.0"
+  },
+  "dependencies": {
+    "@doist/todoist-api-typescript": "^1.5.0",
+    "axios": "^0.25.0",
+    "dotenv": "^16.0.0",
+    "uuid": "^8.3.2"
   }
 }

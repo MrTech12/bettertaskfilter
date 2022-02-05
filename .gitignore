@@ -131,3 +131,6 @@ dist
 
 # VS Code
 .vscode
+
+# Environment variables
+.env
