@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const { MessageEmbed } = require("discord.js");
+import logger = require('npmlog');
 
 exports.sendStatusMessage = (): void => {
 
@@ -20,6 +21,7 @@ exports.sendStatusMessage = (): void => {
     client.on('ready', async () => {
         const botChannel = client.channels.cache.find((channel: any) => channel.name === process.env.DISCORD_CHANNEL_NAME);
         await botChannel.send({ embeds: [statusEmbed] });
+        logger.info("From Discord module", "The Embed has been send to the channel.");
         client.destroy();
     })
 }
