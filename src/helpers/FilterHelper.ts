@@ -1,6 +1,6 @@
 import logger = require('npmlog');
 
-exports.createFilter = (projectnames: string[]): string => {
+exports.createFilterQuery = (projectnames: string[]): string => {
     let filterQuery: string = "";
     projectnames.forEach((projectname: string) => {
         filterQuery += '#' + projectname + `${process.env.FILTER_ORDER_QUERY}`;

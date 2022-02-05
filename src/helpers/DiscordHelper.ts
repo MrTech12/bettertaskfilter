@@ -21,7 +21,7 @@ exports.sendStatusMessage = (): void => {
     client.on('ready', async () => {
         const botChannel = client.channels.cache.find((channel: any) => channel.name === process.env.DISCORD_CHANNEL_NAME);
         await botChannel.send({ embeds: [statusEmbed] });
-        logger.info("From Discord module", "The Embed has been send to the channel.");
+        logger.info("From Discord module", "The Embed has been sent to the channel.");
         client.destroy();
     })
 }

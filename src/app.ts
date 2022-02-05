@@ -11,16 +11,16 @@ if (process.env.TODOIST_TOKEN === "" || process.env.DISCORD_TOKEN === "" || proc
 
 logger.info("From Setup","The tokens are available. The application is starting...");
 TodoistProvider.retrieveFilters().then((filters: FilterInterface[]) => {
-    let filterBucket = filters.find(filter => filter.id == process.env.FILTER_BUCKET_ID);
+    let bucketFilter = filters.find(filter => filter.id == process.env.FILTER_BUCKET_ID);
 
-    TodoistProvider.retrieveTasks(filterBucket).then((tasks: TaskInterface[]) => {
+    TodoistProvider.retrieveTasks(bucketFilter).then((tasks: TaskInterface[]) => {
         TodoistProvider.retrieveProjectNames(tasks).then((retrievedProjectNames:string[]) => {
             let projectNames: string[] = [];
             projectNames = [...retrievedProjectNames];
 
-            let filterQuery = FilterHelper.createFilter(projectNames);
+            let newFilterQuery = FilterHelper.createFilterQuery(projectNames);
 
-            TodoistProvider.updateOrderFilter(filterQuery).then(() => {
+            TodoistProvider.updateOrderFilter(newFilterQuery).then(() => {
                 DiscordHelper.sendStatusMessage();
             });
         });
