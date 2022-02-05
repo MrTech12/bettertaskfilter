@@ -21,9 +21,20 @@ After that, tasks are retrieved with the first filter, that is used to retrieve 
 After obtaining the id's, the application retrieves the project names. These names are used to create the new filter query for the second filter.
 After the query is created, it is then applied to the second filter.
 
+## Setup
+The `.env.example` file contains the environment variables that are needed to run the application. The keys inside this file can be put in a `.env` file and populated with the values.
+The following values are needed for the keys:
+* TODOIST_TOKEN -- The API token to communicate with a Todoist account.
+* FILTER_BUCKET_ID -- The ID of the first filter, which has all the important tasks of the day.
+* FILTER_ORDER_ID -- The ID of the second filter, which will have all the tasks sorted by priority and project.
+* FILTER_ORDER_QUERY -- The query that is used for the second filter, to get tasks based on their priority and project.
+* DISCORD_TOKEN -- The Discord token used to communicate with a Discord Bot.
+
 
 ## External sources
 The project makes use of the `axios` library to communicate with the service.
 There are two API's for interactions: the REST API & the Sync API.
 * The REST API is used for retrieving tasks and projects.
 * The Sync API is used for retrieving and updating filters.
+
+
