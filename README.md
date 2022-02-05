@@ -18,8 +18,8 @@ The project makes use of two filters, one to get tasks, based on a few condition
 
 The project first retrieves all the filters of the account & passes only the two required filters to the rest of the application.
 After that, tasks are retrieved with the first filter, that is used to retrieve all important tasks. The project id's of the tasks are retrieved and the duplicates are filtered out.
-After obtaining the id's, the application retrieves the project names. These names are used to create the new filter query for the second filter.
-After the query is created, it is then applied to the second filter.
+After obtaining the id's, the application retrieves the project names. These names are used to create the new filter query for the second filter. After the query is created, it is then applied to the second filter.
+Once the filter phase is complete, the application sends an Embed message to a Discord channel, to notify the user.
 
 ## Setup
 The `.env.example` file contains the environment variables that are needed to run the application. The keys inside this file can be put in a `.env` file and populated with the values.
@@ -29,6 +29,7 @@ The following values are needed for the keys:
 * FILTER_ORDER_ID -- The ID of the second filter, which will have all the tasks sorted by priority and project.
 * FILTER_ORDER_QUERY -- The query that is used for the second filter, to get tasks based on their priority and project.
 * DISCORD_TOKEN -- The Discord token used to communicate with a Discord Bot.
+* DISCORD_CHANNEL_NAME -- The name of the Discord channel to send the messages to.
 
 
 ## External sources
@@ -36,5 +37,4 @@ The project makes use of the `axios` library to communicate with the service.
 There are two API's for interactions: the REST API & the Sync API.
 * The REST API is used for retrieving tasks and projects.
 * The Sync API is used for retrieving and updating filters.
-
-
+The project also makes use of the `discord.js` library, to send an Embed message to a Discord channel for notifying the user.
