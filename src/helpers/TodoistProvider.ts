@@ -6,16 +6,15 @@ let syncAPI = 'https://todoist.com/api/v8/sync';
 let restAPITasks = 'https://api.todoist.com/rest/v1/tasks';
 let restAPIProjects = 'https://api.todoist.com/rest/v1/projects';
 
-exports.retrieveFilters = async () => {
-    const body = {"sync_token": "*", "resource_types": ["filters"]}
-    const axiosConfig: AxiosRequestConfig = {
-        headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`}
-    };
+exports.retrieveFilters = async (): Promise<FilterInterface[]> => {
+    const body: FilterBodyInterface = {"sync_token": "*", "resource_types": ["filters"]}
+    const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
-    let filters: any[] = [];
+    let filters: FilterInterface[] = [];
+    
     await axios.post(syncAPI, body, axiosConfig).then(response => {
-        response.data.filters.forEach((filter: any) => {
-            if (filter.id == process.env.FILTER_BUCKET || filter.id == process.env.FILTER_ORDER) {
+        response.data.filters.forEach((filter: FilterInterface) => {
+            if (filter.id == process.env.FILTER_BUCKET_ID || filter.id == process.env.FILTER_ORDER_ID) {
                 filters.push(filter);
             }
         });
@@ -23,22 +22,20 @@ exports.retrieveFilters = async () => {
     return filters;
 };
 
-exports.retrieveTasks = async(filterQuery: any) => {
-    const axiosConfig: AxiosRequestConfig = {
-        headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`}
-    };
+exports.retrieveTasks = async (filterQuery: FilterInterface): Promise<TaskInterface[]> => {
+    const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
-    let filterBucketQuery = filterQuery.query.replaceAll("&", "%26");
-    let tasks: any = [];
+    let filterBucketQuery: string = filterQuery.query.split("&").join("%26");
+    let tasks: TaskInterface[] = [];
+    let uri: string = `${restAPITasks}?filter=${filterBucketQuery}`;
 
-    let uri = `${restAPITasks}?filter=${filterBucketQuery}`;
     await axios.get(uri, axiosConfig).then(response => {
-        response.data.forEach((task: any) => { tasks.push(task); });
+        response.data.forEach((task: TaskInterface) => { tasks.push(task); });
     }).catch((error) => console.log(error));
     return tasks;
 };
 
-exports.retrieveProjectNames = async(tasks:any[]) => {
+exports.retrieveProjectNames = async (tasks:TaskInterface[]): Promise<string[]> => {
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
     const api = new TodoistApi(`${process.env.TODOIST_TOKEN}`);
 
@@ -46,13 +43,14 @@ exports.retrieveProjectNames = async(tasks:any[]) => {
     let sortedProjectNames: string[] = [];
 
     for (let index = 0; index < tasks.length; index++) {
-        let uri = `${restAPIProjects}/${tasks[index].project_id}`;
+        let uri: string = `${restAPIProjects}/${tasks[index].project_id}`;
+
         await axios.get(uri, axiosConfig).then(response => {
             projectNames.push(response.data.name);
         }).catch((error) => console.log(error));
     }
 
-    projectNames.forEach((projectName: any) => {
+    projectNames.forEach((projectName: string) => {
     if (!sortedProjectNames.includes(projectName)) {
         sortedProjectNames.push(projectName);
         }
@@ -60,8 +58,8 @@ exports.retrieveProjectNames = async(tasks:any[]) => {
     return sortedProjectNames;
 };
 
-exports.updateOrderFilter = async(filterQuery: any) => {
-    const body = { "commands": [{"type": "filter_update", "uuid": `${uuidv4()}`, "args": {"id": `${process.env.FILTER_ORDER}`, "query": `${filterQuery}`}}] };
+exports.updateOrderFilter = async(filterQuery: string) => {
+    const body: UpdateFilterBodyInterface = { "commands": [{"type": "filter_update", "uuid": `${uuidv4()}`, "args": {"id": `${process.env.FILTER_ORDER_ID}`, "query": `${filterQuery}`}}] };
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
     await axios.post(syncAPI, body, axiosConfig).then(response => {  })
