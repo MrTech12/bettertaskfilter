@@ -56,7 +56,7 @@ exports.retrieveProjectNames = async (tasks:TaskInterface[]): Promise<string[]> 
     return sortedProjectNames;
 };
 
-exports.updateOrderFilter = async(filterQuery: string) => {
+exports.updateOrderFilter = async(filterQuery: string): Promise<void> => {
     const body: UpdateFilterBodyInterface = { "commands": [{"type": "filter_update", "uuid": `${uuidv4()}`, "args": {"id": `${process.env.FILTER_ORDER_ID}`, "query": `${filterQuery}`}}] };
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
