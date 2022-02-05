@@ -5,7 +5,7 @@ exports.sendStatusMessage = (): void => {
 
     let localeOptions: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: "numeric" };
     let dateTimeNow = new Date().toLocaleString('nl-NL', localeOptions);
-    let message = `Tasks have been sorted @ ${dateTimeNow}`;
+    let message = `The filter query has been updated on ${dateTimeNow}`;
 
     const statusEmbed = new MessageEmbed()
 	.setColor('#0099ff')
