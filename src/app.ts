@@ -22,9 +22,7 @@ TodoistProvider.retrieveFilters().then((filters: FilterInterface[]) => {
 
             TodoistProvider.updateOrderFilter(filterQuery).then(() => {
                 DiscordHelper.sendStatusMessage();
-                logger.info("From Setup","The application is finished.");
             });
         });
     });
 });
-

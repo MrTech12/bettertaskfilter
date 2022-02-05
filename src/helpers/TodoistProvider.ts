@@ -13,14 +13,14 @@ exports.retrieveFilters = async (): Promise<FilterInterface[]> => {
     let filters: FilterInterface[] = [];
     
     await axios.post(syncAPI, body, axiosConfig).then(response => {
-        logger.info("From REST filter response", "All filters have been retrieved");
+        logger.info("From REST filter response", "All filters have been retrieved.");
         response.data.filters.forEach((filter: FilterInterface) => {
             if (filter.id == process.env.FILTER_BUCKET_ID || filter.id == process.env.FILTER_ORDER_ID) {
                 filters.push(filter);
             }
         });
-    }).catch((error) => logger.error("From REST filter response", "There is a problem retrieving the filters of the account"));
-    logger.info("From REST filter response", "The 2 filters have been retrieved");
+    }).catch((error) => logger.error("From REST filter response", "There is a problem retrieving the filters of the account."));
+    logger.info("From REST filter response", "The 2 filters have been retrieved.");
     return filters;
 };
 
