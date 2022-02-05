@@ -1,4 +1,3 @@
-import { TodoistApi } from '@doist/todoist-api-typescript';
 import axios, { AxiosRequestConfig } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,7 +6,7 @@ let restAPITasks = 'https://api.todoist.com/rest/v1/tasks';
 let restAPIProjects = 'https://api.todoist.com/rest/v1/projects';
 
 exports.retrieveFilters = async (): Promise<FilterInterface[]> => {
-    const body: FilterBodyInterface = {"sync_token": "*", "resource_types": ["filters"]}
+    const body: FilterBodyInterface = { "sync_token": "*", "resource_types": ["filters"] }
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
     let filters: FilterInterface[] = [];
@@ -37,7 +36,6 @@ exports.retrieveTasks = async (filterQuery: FilterInterface): Promise<TaskInterf
 
 exports.retrieveProjectNames = async (tasks:TaskInterface[]): Promise<string[]> => {
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
-    const api = new TodoistApi(`${process.env.TODOIST_TOKEN}`);
 
     let projectNames: string[] = [];
     let sortedProjectNames: string[] = [];
@@ -62,7 +60,5 @@ exports.updateOrderFilter = async(filterQuery: string) => {
     const body: UpdateFilterBodyInterface = { "commands": [{"type": "filter_update", "uuid": `${uuidv4()}`, "args": {"id": `${process.env.FILTER_ORDER_ID}`, "query": `${filterQuery}`}}] };
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
-    await axios.post(syncAPI, body, axiosConfig).then(response => {  })
-    .catch((error) => console.log(error));
+    await axios.post(syncAPI, body, axiosConfig).then(response => {  }).catch((error) => console.log(error));
 };
-

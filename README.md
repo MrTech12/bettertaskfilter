@@ -15,3 +15,15 @@ Another motivation for this project was an article by Michael Wille. He created 
 
 ## Workflow
 The project makes use of two filters, one to get tasks, based on a few conditions and another one to show the retrieved tasks, based on their priority and project. Filters are used to still stay in the Todoist environment & to make task changes more accessible. The API provided access to the [filters](https://developer.todoist.com/sync/v8/#filters)
+
+The project first retrieves all the filters of the account & passes only the two required filters to the rest of the application.
+After that, tasks are retrieved with the first filter, that is used to retrieve all important tasks. The project id's of the tasks are retrieved and the duplicates are filtered out.
+After obtaining the id's, the application retrieves the project names. These names are used to create the new filter query for the second filter.
+After the query is created, it is then applied to the second filter.
+
+
+## External sources
+The project makes use of the `axios` library to communicate with the service.
+There are two API's for interactions: the REST API & the Sync API.
+* The REST API is used for retrieving tasks and projects.
+* The Sync API is used for retrieving and updating filters.
