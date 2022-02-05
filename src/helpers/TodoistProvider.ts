@@ -24,17 +24,17 @@ exports.retrieveFilters = async (): Promise<FilterInterface[]> => {
     return filters;
 };
 
-exports.retrieveTasks = async (filterQuery: FilterInterface): Promise<TaskInterface[]> => {
+exports.retrieveTasks = async (bucketFilter: FilterInterface): Promise<TaskInterface[]> => {
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
-    if(filterQuery == undefined) {
+    if(bucketFilter == undefined) {
         logger.error("From REST task request","The bucket filter has not been saved properly.");
         process.exit(1);
     }
 
-    let filterBucketQuery: string = filterQuery.query.split("&").join("%26");
+    let bucketFilterQuery: string = bucketFilter.query.split("&").join("%26");
     let tasks: TaskInterface[] = [];
-    let uri: string = `${restAPITasks}?filter=${filterBucketQuery}`;
+    let uri: string = `${restAPITasks}?filter=${bucketFilterQuery}`;
 
     await axios.get(uri, axiosConfig).then(response => {
         logger.info("From REST task response", "All tasks have been retrieved.");
@@ -45,9 +45,7 @@ exports.retrieveTasks = async (filterQuery: FilterInterface): Promise<TaskInterf
 
 exports.retrieveProjectNames = async (tasks:TaskInterface[]): Promise<string[]> => {
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
-
     let projectNames: string[] = [];
-    let sortedProjectNames: string[] = [];
 
     for (let index = 0; index < tasks.length; index++) {
         let uri: string = `${restAPIProjects}/${tasks[index].project_id}`;
@@ -58,6 +56,7 @@ exports.retrieveProjectNames = async (tasks:TaskInterface[]): Promise<string[]> 
     }
     logger.info("From REST project response", "All project names of the retrieved tasks have been retrieved.");
 
+    let sortedProjectNames: string[] = [];
     projectNames.forEach((projectName: string) => {
     if (!sortedProjectNames.includes(projectName)) {
         sortedProjectNames.push(projectName);
