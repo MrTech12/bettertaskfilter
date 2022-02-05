@@ -1,6 +1,7 @@
 require("dotenv").config();
 const TodoistProvider = require('./Helpers/TodoistProvider');
 const FilterHelper = require('./Helpers/FilterHelper');
+const DiscordHelper = require('./helpers/DiscordHelper');
 
 if (process.env.TODOIST_TOKEN === "" || process.env.DISCORD_TOKEN === "") {
     console.error("Tokens not found");
@@ -18,8 +19,10 @@ TodoistProvider.retrieveFilters().then((filters: FilterInterface[]) => {
             let filterQuery = FilterHelper.createFilter(projectNames);
 
             TodoistProvider.updateOrderFilter(filterQuery).then(() => {
+                DiscordHelper.sendStatusMessage();
                 console.log("done for the day");
             });
         });
     });
 });
+

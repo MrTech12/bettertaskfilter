@@ -5,6 +5,7 @@ declare namespace NodeJS {
       FILTER_ORDER_ID: number | undefined;
       FILTER_ORDER_QUERY: string | undefined;
       DISCORD_TOKEN: string | undefined;
+      DISCORD_CHANNEL_NAME: string | undefined;
     }
   }
   
