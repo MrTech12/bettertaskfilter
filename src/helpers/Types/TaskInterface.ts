@@ -19,7 +19,7 @@ interface TaskInterface {
         string: string, 
         date: string,
         datetime: string | undefined,
-        timezone: string | undefined},
+        timezone: string | undefined
+    },
     url: string
-
 }

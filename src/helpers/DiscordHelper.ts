@@ -1,27 +1,25 @@
-const Discord = require("discord.js");
-const { MessageEmbed } = require("discord.js");
-import logger = require('npmlog');
+const Discord = require('discord.js');
+import { MessageEmbed } from 'discord.js';
+import logger from 'npmlog';
+import * as DateTimeHelper from './DateTimeHelper';
 
-exports.sendStatusMessage = (): void => {
-
-    let localeOptions: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: "numeric" };
-    let dateTimeNow = new Date().toLocaleString('nl-NL', localeOptions);
-    let message = `The filter query has been updated on ${dateTimeNow}`;
+export function sendStatusMessage(): void {
+    let message: string = `The filter query has been updated on ${DateTimeHelper.getDutchDateTime('long')}`;
 
     const statusEmbed = new MessageEmbed()
 	.setColor('#0099ff')
 	.setTitle('Better_Task_Filter STATUS')
 	.setAuthor({ name: 'bettertaskfilter-bot' })
 	.setDescription(`${message}`)
-	.setTimestamp()
+	.setTimestamp();
 
-    const client = new Discord.Client({intents: ["GUILDS"]});
+    const client: any = new Discord.Client({ intents: ['GUILDS'] });
     client.login(process.env.DISCORD_TOKEN);
 
     client.on('ready', async () => {
         const botChannel = client.channels.cache.find((channel: any) => channel.name === process.env.DISCORD_CHANNEL_NAME);
         await botChannel.send({ embeds: [statusEmbed] });
-        logger.info("From Discord module", "The Embed has been sent to the channel.");
+        logger.info(`From Discord module @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The Embed has been sent to the channel.');
         client.destroy();
     })
 }

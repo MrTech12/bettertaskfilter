@@ -4,7 +4,7 @@
   "description": "Creating a filter in Todoist, which creates a view where tasks are shown based on their priority and project.",
   "main": "dist/app.js",
   "scripts": {
-    "start:dev": "tsc && node dist/app.js",
+    "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },

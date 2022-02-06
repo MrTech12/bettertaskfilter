@@ -12,4 +12,14 @@ COPY . .
 
 RUN npm run build
 
-CMD [ "node", "./dist/app.js" ]
+#Running the JS version of the application.
+FROM node:16.13.2-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./
+
+RUN npm install --production
+
+CMD [ "node", "app.js" ]
