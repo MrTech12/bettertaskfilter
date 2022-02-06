@@ -38,3 +38,7 @@ There are two API's for interactions: the REST API & the Sync API.
 * The REST API is used for retrieving tasks and projects.
 * The Sync API is used for retrieving and updating filters.
 The project also makes use of the `discord.js` library, to send an Embed message to a Discord channel for notifying the user.
+
+
+## Disclaimer
+This project is NOT created by, affiliated with, or supported by Doist.

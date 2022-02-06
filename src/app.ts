@@ -1,6 +1,6 @@
 require("dotenv").config();
-const TodoistProvider = require('./Helpers/TodoistProvider');
-const FilterHelper = require('./Helpers/FilterHelper');
+const TodoistProvider = require('./helpers/TodoistProvider');
+const FilterHelper = require('./helpers/FilterHelper');
 const DiscordHelper = require('./helpers/DiscordHelper');
 import logger = require('npmlog');
 
