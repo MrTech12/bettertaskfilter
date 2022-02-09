@@ -16,6 +16,7 @@ Another motivation for this project was an article by Michael Wille. He created 
 ## Workflow
 The project makes use of two filters, one to get tasks, based on a few conditions and another one to show the retrieved tasks, based on their priority and project. Filters are used to still stay in the Todoist environment & to make task changes more accessible. The API provided access to the [filters](https://developer.todoist.com/sync/v8/#filters)
 
+The application runs when a certain endpoint is called from a client application.
 The project first retrieves all the filters of the account & passes only the two required filters to the rest of the application.
 After that, tasks are retrieved with the first filter, that is used to retrieve all important tasks. The project id's of the tasks are retrieved and the duplicates are filtered out.
 After obtaining the id's, the application retrieves the project names. These names are used to create the new filter query for the second filter. After the query is created, it is then applied to the second filter.
@@ -24,6 +25,7 @@ Once the filter phase is complete, the application sends an Embed message to a D
 ## Setup
 The `.env.example` file contains the environment variables that are needed to run the application. The keys inside this file can be put in a `.env` file and populated with the values.
 The following values are needed for the keys:
+* PORT -- The port number for the 'express' webserver.
 * TODOIST_TOKEN -- The API token to communicate with a Todoist account.
 * FILTER_BUCKET_ID -- The ID of the first filter, which has all the important tasks of the day.
 * FILTER_ORDER_ID -- The ID of the second filter, which will have all the tasks sorted by priority and project.
@@ -31,6 +33,7 @@ The following values are needed for the keys:
 * DISCORD_TOKEN -- The Discord token used to communicate with a Discord Bot.
 * DISCORD_CHANNEL_NAME -- The name of the Discord channel to send the messages to.
 
+The endpoint to start the filter process is a POST to `/filterpriority`.
 
 ## External sources
 The project makes use of the `axios` library to communicate with the service.
