@@ -37,10 +37,7 @@ async function getFilterQuery(tasks: TaskInterface[]): Promise<string> {
     let filterquery: string = '';
 
     await TodoistProvider.retrieveProjectNames(tasks).then((retrievedProjectNames:string[]) => { 
-        let projectNames: string[] = [];
-        projectNames = [...retrievedProjectNames];
-
-        filterquery = FilterHelper.createFilterQuery(projectNames);
+        filterquery = FilterHelper.createFilterQuery(retrievedProjectNames) 
     });
     return filterquery;
 }
