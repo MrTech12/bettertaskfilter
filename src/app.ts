@@ -1,8 +1,9 @@
 require('dotenv').config();
 import * as TodoistProvider from './helpers/TodoistProvider';
 import * as FilterHelper from './helpers/FilterHelper';
-import * as DiscordHelper from './helpers/DiscordHelper';
 import * as DateTimeHelper from './helpers/DateTimeHelper';
+import * as ProjectHelper from './helpers/ProjectHelper';
+import * as TaskHelper from './helpers/TaskHelper';
 import logger from 'npmlog';
 
 async function InitiateApp (): Promise<void> {
@@ -13,37 +14,12 @@ async function InitiateApp (): Promise<void> {
     
     logger.info(`From Setup @ ${DateTimeHelper.getDutchDateTime('short')}`,'The tokens are available. The application is starting...');
     await TodoistProvider.retrieveFilters()
-        .then((filterResult: FilterInterface[]) => getBucketFilter(filterResult))
-        .then((bucketFilter: FilterInterface) => getTasks(bucketFilter))
-        .then((tasks: TaskInterface[]) => getFilterQuery(tasks))
-        .then((newFilterQuery: string) => updateFilter(newFilterQuery));
-}
-
-function getBucketFilter(filters: FilterInterface[]): FilterInterface {
-    let bucketFilter = filters.find(filter => filter.id == process.env.FILTER_BUCKET_ID);
-
-    if(bucketFilter == undefined) {
-        logger.error(`From Setup @ ${DateTimeHelper.getDutchDateTime('short')}`,'The bucket filter has not been retrieved properly.');
-        process.exit(1);
-    }
-    return bucketFilter;
-}
-
-async function getTasks(bucketFilter: FilterInterface): Promise<TaskInterface[]> {
-    return await TodoistProvider.retrieveTasks(bucketFilter);
-}
-
-async function getFilterQuery(tasks: TaskInterface[]): Promise<string> {
-    let filterquery: string = '';
-
-    await TodoistProvider.retrieveProjectNames(tasks).then((retrievedProjectNames:string[]) => { 
-        filterquery = FilterHelper.createFilterQuery(retrievedProjectNames) 
-    });
-    return filterquery;
-}
-
-async function updateFilter(newFilterQuery: string): Promise<void> {
-    await TodoistProvider.updateOrderFilter(newFilterQuery).then(async () => DiscordHelper.sendStatusMessage());
+        .then((filterResult: FilterInterface[]) => FilterHelper.findTheFilters(filterResult))
+        .then((filterResult: FilterInterface[]) => FilterHelper.getBucketFilter(filterResult))
+        .then((bucketFilter: FilterInterface) => TaskHelper.getTasks(bucketFilter))
+        .then((tasks: TaskInterface[]) => ProjectHelper.getProjectNames(tasks))
+        .then((retrievedProjectNames: string[]) => FilterHelper.createFilterQuery(retrievedProjectNames))
+        .then((newFilterQuery: string) => FilterHelper.updateFilter(newFilterQuery));
 }
 
 InitiateApp();
