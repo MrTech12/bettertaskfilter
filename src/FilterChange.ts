@@ -6,7 +6,7 @@ import * as ProjectHelper from './helpers/ProjectHelper';
 import * as TaskHelper from './helpers/TaskHelper';
 import logger from 'npmlog';
 
-async function InitiateApp (): Promise<void> {
+export async function InitiateFilterChange(): Promise<void> {
     if (process.env.TODOIST_TOKEN === '' || process.env.DISCORD_TOKEN === '' || process.env.TODOIST_TOKEN === undefined || process.env.DISCORD_TOKEN === undefined) {
         logger.error(`From Setup @ ${DateTimeHelper.getDutchDateTime('short')}`,'The tokens for Todoist & Discord are not available.');
         process.exit(1);
@@ -21,5 +21,3 @@ async function InitiateApp (): Promise<void> {
         .then((retrievedProjectNames: string[]) => FilterHelper.createFilterQuery(retrievedProjectNames))
         .then((newFilterQuery: string) => FilterHelper.updateFilter(newFilterQuery));
 }
-
-InitiateApp();
