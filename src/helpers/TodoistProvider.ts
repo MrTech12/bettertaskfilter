@@ -3,29 +3,23 @@ import { v4 as uuidv4 } from 'uuid';
 import logger from 'npmlog';
 import * as DateTimeHelper from './DateTimeHelper';
 
-let syncAPI = 'https://todoist.com/api/v8/sync';
-let restAPITasks = 'https://api.todoist.com/rest/v1/tasks';
-let restAPIProjects = 'https://api.todoist.com/rest/v1/projects';
+const syncAPI = 'https://todoist.com/api/v8/sync';
+const restAPITasks = 'https://api.todoist.com/rest/v1/tasks';
+const restAPIProjects = 'https://api.todoist.com/rest/v1/projects';
 
 export async function retrieveFilters(): Promise<FilterInterface[]> {
     const body: FilterBodyInterface = { 'sync_token': '*', 'resource_types': ['filters'] };
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
-    let filters: FilterInterface[] = [];
+    let allFilters: FilterInterface[] = [];
     
     await axios.post(syncAPI, body, axiosConfig)
         .then(response => {
+            allFilters = response.data.filters;
             logger.info(`From REST filter response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'All filters have been retrieved.');
-            response.data.filters.forEach((filter: FilterInterface) => {
-                if (filter.id == process.env.FILTER_BUCKET_ID || filter.id == process.env.FILTER_ORDER_ID) { 
-                    filters.push(filter);
-                }
-            });
         })
         .catch((error) => logger.error(`From REST filter response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'There is a problem retrieving the filters of the account.'));
-    
-    logger.info(`From REST filter response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The 2 filters have been retrieved.');
-    return filters;
+    return allFilters;
 };
 
 export async function retrieveTasks(bucketFilter: FilterInterface): Promise<TaskInterface[]> {
@@ -37,10 +31,8 @@ export async function retrieveTasks(bucketFilter: FilterInterface): Promise<Task
 
     await axios.get(uri, axiosConfig)
         .then(response => {
+            response.data.forEach((task: TaskInterface) => { tasks.push(task) });
             logger.info(`From REST task response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'All tasks have been retrieved.');
-            response.data.forEach((task: TaskInterface) => { 
-                tasks.push(task);
-            });
         })
         .catch((error) => logger.error(`From REST task response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'There is a problem retrieving the tasks of the account.'));
     return tasks;
@@ -55,20 +47,11 @@ export async function retrieveProjectNames(tasks:TaskInterface[]): Promise<strin
         let uri: string = `${restAPIProjects}/${tasks[index].project_id}`;
 
         await axios.get(uri, axiosConfig)
-            .then(response => { projectNames.push(response.data.name); })
+            .then(response => projectNames.push(response.data.name))
             .catch((error) => logger.error(`From REST project response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'There is a problem retrieving the projects of the account.'));
     }
     logger.info(`From REST project response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'All project names of the retrieved tasks have been retrieved.');
-
-    let sortedProjectNames: string[] = [];
-    projectNames.forEach((projectName: string) => { 
-        if (!sortedProjectNames.includes(projectName)) { 
-            sortedProjectNames.push(projectName);
-        }
-    })
-
-    logger.info(`From REST project response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The retrieved project names have been filtered to remove duplicates.');
-    return sortedProjectNames;
+    return projectNames;
 };
 
 export async function updateOrderFilter(filterQuery: string): Promise<void> {
@@ -78,6 +61,6 @@ export async function updateOrderFilter(filterQuery: string): Promise<void> {
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
     await axios.post(syncAPI, body, axiosConfig)
-        .then(response => { logger.info(`From REST filter_update response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The filter query has been updated.'); })
-        .catch((error) => logger.error(`From REST filter_update response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'There is a problem updateing the filter of the account.'));
+        .then(response => logger.info(`From REST filter_update response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The filter query has been updated.'))
+        .catch(error => logger.error(`From REST filter_update response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'There is a problem updateing the filter of the account.'));
 };

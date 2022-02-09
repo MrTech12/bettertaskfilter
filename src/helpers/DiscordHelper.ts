@@ -3,7 +3,7 @@ import { MessageEmbed } from 'discord.js';
 import logger from 'npmlog';
 import * as DateTimeHelper from './DateTimeHelper';
 
-export function sendStatusMessage(): void {
+export async function sendStatusMessage(): Promise<void> {
     let message: string = `The filter query has been updated on ${DateTimeHelper.getDutchDateTime('long')}`;
 
     const statusEmbed = new MessageEmbed()
