@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 import { MessageEmbed } from 'discord.js';
 import logger from 'npmlog';
-import * as DateTimeHelper from './DateTimeHelper';
+import * as DateTimeHelper from '../helpers/DateTimeHelper';
 
 export async function sendStatusMessage(): Promise<void> {
     let message: string = `The filter query has been updated on ${DateTimeHelper.getDutchDateTime('long')}`;

@@ -33,7 +33,10 @@ The following values are needed for the keys:
 * DISCORD_TOKEN -- The Discord token used to communicate with a Discord Bot.
 * DISCORD_CHANNEL_NAME -- The name of the Discord channel to send the messages to.
 
-The endpoint to start the filter process is a POST to `/filterpriority`.
+The command to start the project is `npm run start`. This run run the TypScript compiler to produce JavaScript versions of TypeScript files & place then in a 'dist' folder which will also be created during this process.
+After the JavaScript files are generated, node will be started on the `index.js` file.
+
+To start the filter process, send an empty POST HTTP request to the following endpoint: `/filterpriority`.
 
 ## External sources
 The project makes use of the `axios` library to communicate with the service.

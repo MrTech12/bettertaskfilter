@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import logger from 'npmlog';
-import * as DateTimeHelper from './DateTimeHelper';
+import * as DateTimeHelper from '../helpers/DateTimeHelper';
 
 const syncAPI = 'https://todoist.com/api/v8/sync';
 const restAPITasks = 'https://api.todoist.com/rest/v1/tasks';

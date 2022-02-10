@@ -1,7 +1,7 @@
 import logger from 'npmlog';
 import * as DateTimeHelper from './DateTimeHelper';
-import * as TodoistProvider from './TodoistProvider';
-import * as DiscordHelper from './DiscordHelper';
+import * as TodoistService from '../services/TodoistService';
+import * as DiscordService from '../services/DiscordService';
 
 export function findTheFilters(filterResult: FilterInterface[]) : FilterInterface[] {
     let filters: FilterInterface[] = [];
@@ -34,5 +34,5 @@ export function createFilterQuery(projectnames: string[]): string {
 };
 
 export async function updateFilter(newFilterQuery: string): Promise<void> {
-    await TodoistProvider.updateOrderFilter(newFilterQuery).then(async () => DiscordHelper.sendStatusMessage());
+    await TodoistService.updateOrderFilter(newFilterQuery).then(async () => DiscordService.sendStatusMessage());
 }

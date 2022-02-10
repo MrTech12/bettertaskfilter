@@ -1,11 +1,11 @@
-import * as TodoistProvider from './TodoistProvider';
+import * as TodoistService from '../services/TodoistService';
 import * as DateTimeHelper from './DateTimeHelper';
 import logger from 'npmlog';
 
 export async function getProjectNames(tasks: TaskInterface[]): Promise<string[]> {
     let projectNames: string[] = [];
 
-    await TodoistProvider.retrieveProjectNames(tasks).then((retrievedProjectNames:string[]) => { 
+    await TodoistService.retrieveProjectNames(tasks).then((retrievedProjectNames:string[]) => { 
         projectNames = sortProjectNames(retrievedProjectNames);
     });
     return projectNames;

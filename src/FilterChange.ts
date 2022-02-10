@@ -1,5 +1,5 @@
 require('dotenv').config();
-import * as TodoistProvider from './helpers/TodoistProvider';
+import * as TodoistService from './services/TodoistService';
 import * as FilterHelper from './helpers/FilterHelper';
 import * as DateTimeHelper from './helpers/DateTimeHelper';
 import * as ProjectHelper from './helpers/ProjectHelper';
@@ -13,7 +13,7 @@ export async function InitiateFilterChange(): Promise<void> {
     }
     
     logger.info(`From Setup @ ${DateTimeHelper.getDutchDateTime('short')}`,'The tokens are available. The application is starting...');
-    await TodoistProvider.retrieveFilters()
+    await TodoistService.retrieveFilters()
         .then((filterResult: FilterInterface[]) => FilterHelper.findTheFilters(filterResult))
         .then((filterResult: FilterInterface[]) => FilterHelper.getBucketFilter(filterResult))
         .then((bucketFilter: FilterInterface) => TaskHelper.getTasks(bucketFilter))
