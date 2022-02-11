@@ -38,6 +38,22 @@ After the JavaScript files are generated, node will be started on the `index.js`
 
 To start the filter process, send an empty POST HTTP request to the following endpoint: `/filterpriority`.
 
+## Docker
+The Dockerfile can be used to create functional Docker images & containers. To run a container, a couple environment variables need to be supplied in order to make it function correctly. A port needs to be supplied as well.
+The environment values can be put in a file called `env.list` with the format of `key=value`. Quotes are not needed. To pass the file to the container, use the `--env-file` flag. For the port, use the `-p` flag with this format: `0000:0000`
+
+The following variables & their values are needed:
+* PORT -- The port number for the 'express' webserver.
+* TODOIST_TOKEN -- The API token to communicate with a Todoist account.
+* FILTER_BUCKET_ID -- The ID of the first filter, which has all the important tasks of the day.
+* FILTER_ORDER_ID -- The ID of the second filter, which will have all the tasks sorted by priority and project.
+* FILTER_ORDER_QUERY -- The query that is used for the second filter, to get tasks based on their priority and project.
+* DISCORD_TOKEN -- The Discord token used to communicate with a Discord Bot.
+* DISCORD_CHANNEL_NAME -- The name of the Discord channel to send the messages to.
+* TZ -- The timezone of the container. See this [link](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for accepted values.
+
+To start the filter process, send an empty POST HTTP request to the following endpoint: `/filterpriority`.
+
 ## External sources
 The project makes use of the `axios` library to communicate with the service.
 There are two API's for interactions: the REST API & the Sync API.

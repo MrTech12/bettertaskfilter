@@ -22,4 +22,7 @@ COPY --from=builder /app/dist ./
 
 RUN npm install --production
 
+# Adding a package to be able to change the timezone of the environment.
+RUN apk update && apk add --no-cache tzdata
+
 CMD [ "node", "index.js" ]
