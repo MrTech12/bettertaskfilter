@@ -1,0 +1,37 @@
+{
+  "name": "bettertaskfilter",
+  "version": "2.0.2",
+  "description": "Creating a filter in Todoist, which creates a view where tasks are shown based on their priority and project.",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "MrTech12",
+  "license": "MIT",
+  "homepage": "https://github.com/MrTech12/bettertaskfilter#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrTech12/bettertaskfilter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrTech12/bettertaskfilter/issues"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.14",
+    "@types/npmlog": "^4.1.4",
+    "@types/uuid": "^8.3.4",
+    "ts-node": "^10.4.0"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "npmlog": "^6.0.0",
+    "uuid": "^8.3.2"
+  }
+}
