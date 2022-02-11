@@ -22,4 +22,4 @@ COPY --from=builder /app/dist ./
 
 RUN npm install --production
 
-CMD [ "node", "app.js" ]
+CMD [ "node", "index.js" ]

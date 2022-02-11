@@ -1,6 +1,6 @@
 {
   "name": "bettertaskfilter",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Creating a filter in Todoist, which creates a view where tasks are shown based on their priority and project.",
   "main": "dist/index.js",
   "scripts": {
