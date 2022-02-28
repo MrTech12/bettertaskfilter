@@ -1,6 +1,6 @@
 {
   "name": "bettertaskfilter",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Creating a filter in Todoist, which creates a view where tasks are shown based on their priority and project.",
   "main": "dist/index.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "url": "https://github.com/MrTech12/bettertaskfilter/issues"
   },
   "devDependencies": {
+    "@discordjs/rest": "^0.3.0",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.14",
     "@types/npmlog": "^4.1.4",
