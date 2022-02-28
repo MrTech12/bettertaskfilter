@@ -14,10 +14,10 @@ export async function InitiateFilterChange(): Promise<void> {
     
     logger.info(`From Setup @ ${DateTimeHelper.getDutchDateTime('short')}`,'The tokens are available. The application is starting...');
     await TodoistService.retrieveFilters()
-        .then((filterResult: FilterInterface[]) => FilterHelper.findTheFilters(filterResult))
-        .then((filterResult: FilterInterface[]) => FilterHelper.getBucketFilter(filterResult))
+        .then((allFilters: FilterInterface[]) => FilterHelper.findImportantFilters(allFilters))
+        .then((importantFilters: FilterInterface[]) => FilterHelper.getBucketFilter(importantFilters))
         .then((bucketFilter: FilterInterface) => TaskHelper.getTasks(bucketFilter))
         .then((tasks: TaskInterface[]) => ProjectHelper.getProjectNames(tasks))
-        .then((retrievedProjectNames: string[]) => FilterHelper.createFilterQuery(retrievedProjectNames))
+        .then((projectNames: string[]) => FilterHelper.createFilterQuery(projectNames))
         .then((newFilterQuery: string) => FilterHelper.updateFilter(newFilterQuery));
 }

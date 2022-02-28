@@ -3,14 +3,14 @@ import * as DateTimeHelper from './DateTimeHelper';
 import * as TodoistService from '../services/TodoistService';
 import * as DiscordService from '../services/DiscordService';
 
-export function findTheFilters(filterResult: FilterInterface[]) : FilterInterface[] {
-    let filters: FilterInterface[] = [];
+export function findImportantFilters(allFilters: FilterInterface[]) : FilterInterface[] {
+    let importantFilters: FilterInterface[] = [];
 
-    filterResult.forEach((filter: FilterInterface) => {
-        if (filter.id == process.env.FILTER_BUCKET_ID || filter.id == process.env.FILTER_ORDER_ID) { filters.push(filter) }
+    allFilters.forEach((filter: FilterInterface) => {
+        if (filter.id == process.env.FILTER_BUCKET_ID || filter.id == process.env.FILTER_ORDER_ID) { importantFilters.push(filter) }
     });
     logger.info(`From REST filter response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The 2 filters have been retrieved.');
-    return filters;
+    return importantFilters;
 }
 
 export function getBucketFilter(filters: FilterInterface[]): FilterInterface {
@@ -23,11 +23,13 @@ export function getBucketFilter(filters: FilterInterface[]): FilterInterface {
     return bucketFilter;
 }
 
-export function createFilterQuery(projectnames: string[]): string {
+export function createFilterQuery(projectNames: string[]): string {
     let filterQuery: string = '';
-    projectnames.forEach((projectname: string) => {
+
+    projectNames.forEach((projectname: string) => {
         filterQuery += '#' + projectname + `${process.env.FILTER_ORDER_QUERY}`;
     })
+    
     filterQuery = filterQuery.slice(0, -1); // Remove the last "," from the string, otherwise the query will not function.
     logger.info(`From Filter module @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The new filter query is created.');
     return filterQuery;
