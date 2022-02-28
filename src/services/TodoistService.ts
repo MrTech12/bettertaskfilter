@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import logger from 'npmlog';
 import * as DateTimeHelper from '../helpers/DateTimeHelper';
 
-const syncAPI = 'https://todoist.com/api/v8/sync';
-const restAPITasks = 'https://api.todoist.com/rest/v1/tasks';
-const restAPIProjects = 'https://api.todoist.com/rest/v1/projects';
+const syncURI = 'https://todoist.com/api/v8/sync';
+const restURITasks = 'https://api.todoist.com/rest/v1/tasks';
+const restURIProjects = 'https://api.todoist.com/rest/v1/projects';
 
 export async function retrieveFilters(): Promise<FilterInterface[]> {
     const body: FilterBodyInterface = { 'sync_token': '*', 'resource_types': ['filters'] };
@@ -13,7 +13,7 @@ export async function retrieveFilters(): Promise<FilterInterface[]> {
 
     let allFilters: FilterInterface[] = [];
     
-    await axios.post(syncAPI, body, axiosConfig)
+    await axios.post(syncURI, body, axiosConfig)
         .then(response => {
             allFilters = response.data.filters;
             logger.info(`From REST filter response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'All filters have been retrieved.');
@@ -27,7 +27,7 @@ export async function retrieveTasks(bucketFilter: FilterInterface): Promise<Task
 
     let bucketFilterQuery: string = bucketFilter.query.split('&').join('%26');
     let tasks: TaskInterface[] = [];
-    let uri: string = `${restAPITasks}?filter=${bucketFilterQuery}`;
+    let uri: string = `${restURITasks}?filter=${bucketFilterQuery}`;
 
     await axios.get(uri, axiosConfig)
         .then(response => {
@@ -44,7 +44,7 @@ export async function retrieveProjectNames(tasks:TaskInterface[]): Promise<strin
     let projectNames: string[] = [];
 
     for (let index = 0; index < tasks.length; index++) {
-        let uri: string = `${restAPIProjects}/${tasks[index].project_id}`;
+        let uri: string = `${restURIProjects}/${tasks[index].project_id}`;
 
         await axios.get(uri, axiosConfig)
             .then(response => projectNames.push(response.data.name))
@@ -60,7 +60,7 @@ export async function updateOrderFilter(filterQuery: string): Promise<void> {
     ] };
     const axiosConfig: AxiosRequestConfig = { headers: {'Authorization': `Bearer ${process.env.TODOIST_TOKEN}`} };
 
-    await axios.post(syncAPI, body, axiosConfig)
+    await axios.post(syncURI, body, axiosConfig)
         .then(response => logger.info(`From REST filter_update response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'The filter query has been updated.'))
         .catch(error => logger.error(`From REST filter_update response @ ${DateTimeHelper.getDutchDateTime('short')}`, 'There is a problem updateing the filter of the account.'));
 };
